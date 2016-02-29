@@ -13,30 +13,27 @@
 #define withAndHeight 20
 #define DOWNPULLBTNHEIGHTANDWEITH 50
 
+@interface PullDownView()
+@property (nonatomic, copy) void(^selectBlock)(NSInteger item);
+@property(nonatomic, assign) BOOL isOpen;
+//列表内容
+@property(nonatomic, strong) NSMutableArray *listArray;
+@property(nonatomic, strong)  UILabel *title;
+@property (nonatomic, strong)  UIButton *downPullBtn;
+//覆盖整个view的btn
+@property (nonatomic, strong)  UIButton *viewBtn;
+@end
+
 @implementation PullDownView
 
--(instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self createUI];
-        
-    }
-    return self;
-}
--(instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    if (self = [super initWithCoder:aDecoder]) {
-        [self createUI];
-        
-    }
-    return self;
-}
-
--(void)createUI{
+-(void)createDataWithListArray:(NSArray *)listArray AndTitle:(NSString *)title selectItem:(void(^)(NSInteger index))selectBlock{
+    self.selectBlock = selectBlock;
+    self.listArray = listArray.mutableCopy;
+    
     self.backgroundColor = [UIColor groupTableViewBackgroundColor];
     _isOpen = NO;
     self.title = [[UILabel alloc]init];
+    self.title.text = title;
     self.title.textAlignment = NSTextAlignmentCenter;
     [self addSubview:self.title];
     
@@ -57,7 +54,13 @@
     _listTable.delegate = self;
     _listTable.dataSource = self;
     _listTable.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    [_superView addSubview:_listTable];
+    [self.superview addSubview:_listTable];
+    
+}
+
+-(void)didSelectedcell
+{
+    [_listTable deselectRowAtIndexPath:[_listTable indexPathForSelectedRow] animated:YES];
 }
 
 -(void)layoutSubviews
@@ -67,15 +70,59 @@
     self.downPullBtn.frame = CGRectMake(self.frame.size.width-self.frame.size.height, -1, DOWNPULLBTNHEIGHTANDWEITH, DOWNPULLBTNHEIGHTANDWEITH);
     self.downPullBtn.imageEdgeInsets = UIEdgeInsetsMake(18, 13, 18, 13);
     self.viewBtn.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    self.listTable.frame = CGRectMake(self.frame.origin.x,self.frame.origin.y + self.frame.size.height, self.frame.size.width, 100);
+    self.listTable.frame = CGRectMake(self.frame.origin.x,self.frame.origin.y + self.frame.size.height, self.frame.size.width, 0);
 }
 
-
+-(void)tapAction{
+    if(_isOpen)
+    {
+        [self closeTableView];
+    }
+    else
+    {
+        WEAKSELF
+        [UIView animateWithDuration:0.3 animations:^{
+            if(weakSelf.listArray.count > 0)
+            {
+                /*
+                 注意：如果不加这句话，下面的操作会导致_listTable从上面飘下来的感觉：
+                 _listTable展开并且滑动到底部 -> 点击收起 -> 再点击展开
+                 */
+                [weakSelf.listTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+            CGRect frame = _listTable.frame;
+            frame.size.height = self.listArray.count *weakSelf.frame.size.height;
+            NSInteger canSeeNumber = self.canSeeCount?self.canSeeCount:3;
+            if (self.listArray.count >= canSeeNumber) {
+                frame.size.height = weakSelf.frame.size.height * canSeeNumber;
+            }
+            [weakSelf.listTable setFrame:frame];
+            [weakSelf.superview addSubview:_listTable];
+            [weakSelf.superview bringSubviewToFront:_listTable];//避免被其他子视图遮盖住
+            
+        } completion:^(BOOL finished){
+            weakSelf.isOpen = YES;
+        }];
+    }
+}
+//点击
 -(void)didClickDownPullBtn:(UIButton*)btn{
     [self tapAction];
 }
+//关闭tableView
+-(void)closeTableView{
+    WEAKSELF
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect frame = _listTable.frame;
+        frame.size.height = 0;
+        [weakSelf.listTable setFrame:frame];
+    } completion:^(BOOL finished){
+        [weakSelf.listTable removeFromSuperview];//移除
+        weakSelf.isOpen = NO;
+    }];
+}
 
-#pragma mark -tableview
+#pragma mark -TableviewDelegate
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -110,70 +157,22 @@
     return cell;
 }
 
-//关闭tableView
--(void)closeTableView{
-    WEAKSELF
-    [UIView animateWithDuration:0.3 animations:^{
-        CGRect frame = _listTable.frame;
-        frame.size.height = 0;
-        [weakSelf.listTable setFrame:frame];
-    } completion:^(BOOL finished){
-        [weakSelf.listTable removeFromSuperview];//移除
-        weakSelf.isOpen = NO;
-    }];
-}
+
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.title.text = [_listArray objectAtIndex:indexPath.row];
     _isOpen = YES;
     [self tapAction];
-    if([_delegate respondsToSelector:@selector(selectAtIndex:inCombox:)])
-    {
-        [_delegate selectAtIndex:indexPath.row inCombox:self];
+    if (self.selectBlock) {
+        self.selectBlock(indexPath.row);
     }
-    [self performSelector:@selector(deSelectedRow) withObject:nil afterDelay:0.2];
+    [self performSelector:@selector(didSelectedcell) withObject:nil afterDelay:0.2];
 }
 
--(void)tapAction{
-    if(_isOpen)
-    {
-        [self closeTableView];
-    }
-    else
-    {
-        WEAKSELF
-        [UIView animateWithDuration:0.3 animations:^{
-            if(weakSelf.listArray.count > 0)
-            {
-                /*
-                 注意：如果不加这句话，下面的操作会导致_listTable从上面飘下来的感觉：
-                 _listTable展开并且滑动到底部 -> 点击收起 -> 再点击展开
-                 */
-                [weakSelf.listTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            }
-            CGRect frame = _listTable.frame;
-            frame.size.height = self.listArray.count *weakSelf.frame.size.height;
-            NSInteger canSeeNumber = self.canSeeCount?self.canSeeCount:3;
-            if (self.listArray.count >= canSeeNumber) {
-            frame.size.height = weakSelf.frame.size.height * canSeeNumber;
-                }
-            [weakSelf.listTable setFrame:frame];
-            [weakSelf.superView addSubview:_listTable];
-            [weakSelf.superView bringSubviewToFront:_listTable];//避免被其他子视图遮盖住
 
-        } completion:^(BOOL finished){
-            weakSelf.isOpen = YES;
-        }];
-    }
-}
 
--(void)deSelectedRow
-{
-    [_listTable deselectRowAtIndexPath:[_listTable indexPathForSelectedRow] animated:YES];
-}
-
-#pragma mark ----ios8 ios7 分割线到头
+//#pragma mark ----ios8 ios7 分割线到头
 -(void)viewDidLayoutSubviews
 {
     if ([self.listTable respondsToSelector:@selector(setSeparatorInset:)]) {
@@ -184,7 +183,6 @@
         [self.listTable setLayoutMargins:UIEdgeInsetsMake(0,0,0,0)];
     }
 }
-
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
