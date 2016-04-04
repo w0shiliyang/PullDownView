@@ -9,15 +9,14 @@
 #import "PullDownView.h"
 //弱引用
 #define WEAKSELF typeof(self) __weak weakSelf = self;
+#define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)
+#define KeyWindow [UIApplication sharedApplication].keyWindow
 
-#define withAndHeight 20
-#define DOWNPULLBTNHEIGHTANDWEITH 50
+#define kDownPullBtnwidth 20
+#define kDownPullBtnheight 14
 
-@interface PullDownView()
-@property (nonatomic, copy) void(^selectBlock)(NSInteger item);
+@interface PullDownView()<UITableViewDataSource,UITableViewDelegate>
 @property(nonatomic, assign) BOOL isOpen;
-//列表内容
-@property(nonatomic, strong) NSMutableArray *listArray;
 @property(nonatomic, strong)  UILabel *title;
 @property (nonatomic, strong)  UIButton *downPullBtn;
 //覆盖整个view的btn
@@ -26,10 +25,34 @@
 
 @implementation PullDownView
 
--(void)createDataWithListArray:(NSArray *)listArray AndTitle:(NSString *)title selectItem:(void(^)(NSInteger index))selectBlock{
+-(instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame: frame];
+    [self pullDownWithListArray:nil AndTitle:nil buttonClick:nil selectItem:self.selectBlock];
+    return self;
+}
+
+-(instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self pullDownWithListArray:nil AndTitle:nil buttonClick:nil selectItem:self.selectBlock];
+    }
+    return self;
+}
+
++(instancetype)pullDownWithFrame:(CGRect)frame ListArray:(NSArray *)listArray AndTitle:(NSString *)title buttonClick:(void(^)(void))buttonClick selectItem:(void(^)(NSInteger index))selectBlock{
+    PullDownView * pullDownView =[[[self class]alloc]initWithFrame:frame];
+    pullDownView.listArray = listArray;
+    pullDownView.title.text = title;
+    pullDownView.selectBlock = selectBlock;
+    pullDownView.buttonClick = buttonClick;
+   return pullDownView;
+}
+
+-(void)pullDownWithListArray:(NSArray *)listArray AndTitle:(NSString *)title buttonClick:(void(^)(void))buttonClick selectItem:(void(^)(NSInteger index))selectBlock{
     self.selectBlock = selectBlock;
+    self.buttonClick = buttonClick;
     self.listArray = listArray.mutableCopy;
-    
     self.backgroundColor = [UIColor groupTableViewBackgroundColor];
     _isOpen = NO;
     self.title = [[UILabel alloc]init];
@@ -49,13 +72,20 @@
     self.viewBtn.backgroundColor = [UIColor clearColor];
     [self addSubview:self.viewBtn];
     
+    UIView * view = [UIView new];
+    view.frame = KeyWindow.frame;
+    view.backgroundColor = [UIColor grayColor];
+    view.alpha = 0.2;
+    view.userInteractionEnabled = NO;
+    [KeyWindow addSubview:view];
+    
     self.listTable = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
     _listTable.bounces = NO;
     _listTable.delegate = self;
     _listTable.dataSource = self;
     _listTable.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    [self.superview addSubview:_listTable];
-    
+    self.listTable.frame = CGRectMake(self.frame.origin.x+self.originX,self.frame.origin.y + self.frame.size.height + self.originY, self.frame.size.width, 0);
+    [KeyWindow addSubview:_listTable];
 }
 
 -(void)didSelectedcell
@@ -67,23 +97,23 @@
 {
     [super layoutSubviews];
     self.title.frame = CGRectMake(0, 1, self.frame.size.width, self.frame.size.height-1);
-    self.downPullBtn.frame = CGRectMake(self.frame.size.width-self.frame.size.height, -1, DOWNPULLBTNHEIGHTANDWEITH, DOWNPULLBTNHEIGHTANDWEITH);
-    self.downPullBtn.imageEdgeInsets = UIEdgeInsetsMake(18, 13, 18, 13);
+    self.downPullBtn.frame = CGRectMake(self.frame.size.width-kDownPullBtnwidth-2, (self.frame.size.height-kDownPullBtnheight)/2, kDownPullBtnwidth, kDownPullBtnheight);
     self.viewBtn.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    self.listTable.frame = CGRectMake(self.frame.origin.x,self.frame.origin.y + self.frame.size.height, self.frame.size.width, 0);
+    CGRect rect = self.listTable.frame;
+    rect.origin.x = self.frame.origin.x+self.originX;
+    rect.origin.y = self.frame.origin.y + self.frame.size.height + self.originY;
+    self.listTable.frame = rect;
 }
 
 -(void)tapAction{
-    if(_isOpen)
-    {
+    if(_isOpen){
         [self closeTableView];
     }
     else
     {
         WEAKSELF
         [UIView animateWithDuration:0.3 animations:^{
-            if(weakSelf.listArray.count > 0)
-            {
+            if(weakSelf.listArray.count > 0){
                 /*
                  注意：如果不加这句话，下面的操作会导致_listTable从上面飘下来的感觉：
                  _listTable展开并且滑动到底部 -> 点击收起 -> 再点击展开
@@ -92,21 +122,26 @@
             }
             CGRect frame = _listTable.frame;
             frame.size.height = self.listArray.count *weakSelf.frame.size.height;
-            NSInteger canSeeNumber = self.canSeeCount?self.canSeeCount:3;
+            NSInteger canSeeNumber = self.listCount?self.listCount:3;
             if (self.listArray.count >= canSeeNumber) {
                 frame.size.height = weakSelf.frame.size.height * canSeeNumber;
             }
             [weakSelf.listTable setFrame:frame];
-            [weakSelf.superview addSubview:_listTable];
-            [weakSelf.superview bringSubviewToFront:_listTable];//避免被其他子视图遮盖住
+            [KeyWindow addSubview:_listTable];
+            [KeyWindow bringSubviewToFront:_listTable];//避免被其他子视图遮盖住
             
         } completion:^(BOOL finished){
             weakSelf.isOpen = YES;
+            weakSelf.downPullBtn.transform = CGAffineTransformRotate(weakSelf.downPullBtn.transform, DEGREES_TO_RADIANS(180));
         }];
     }
 }
+
 //点击
 -(void)didClickDownPullBtn:(UIButton*)btn{
+    if (self.buttonClick) {
+        _buttonClick();
+    }
     [self tapAction];
 }
 //关闭tableView
@@ -118,8 +153,44 @@
         [weakSelf.listTable setFrame:frame];
     } completion:^(BOOL finished){
         [weakSelf.listTable removeFromSuperview];//移除
+        if (_isOpen) {
+        weakSelf.downPullBtn.transform = CGAffineTransformRotate(weakSelf.downPullBtn.transform, DEGREES_TO_RADIANS(180));
+        }
         weakSelf.isOpen = NO;
     }];
+}
+-(void)closeTableFast{
+    CGRect frame = _listTable.frame;
+    frame.size.height = 0;
+    [self.listTable setFrame:frame];
+    [self.listTable removeFromSuperview];//移除
+    if (_isOpen) {
+        self.downPullBtn.transform = CGAffineTransformRotate(self.downPullBtn.transform, DEGREES_TO_RADIANS(180));
+    }
+    self.isOpen = NO;
+
+}
+
+#pragma mark --set
+-(void)setTitleString:(NSString *)titleString{
+    _titleString = titleString;
+    self.title.text = titleString;
+}
+
+-(void)setSelectBlock:(void (^)(NSInteger))selectBlock
+{
+    _selectBlock = selectBlock;
+}
+
+-(void)setOriginX:(CGFloat)originX
+{
+    _originX = originX;
+    
+}
+-(void)setOriginY:(CGFloat)originY
+{
+    _originY = originY;
+    
 }
 
 #pragma mark -TableviewDelegate

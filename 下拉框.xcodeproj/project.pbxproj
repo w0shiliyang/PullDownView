@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		7BB072B01C7EEAFC00DFB982 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BB072AF1C7EEAFC00DFB982 /* main.m */; };
 		7BB072B31C7EEAFC00DFB982 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BB072B21C7EEAFC00DFB982 /* AppDelegate.m */; };
-		7BB072B61C7EEAFC00DFB982 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BB072B51C7EEAFC00DFB982 /* ViewController.m */; };
 		7BB072B91C7EEAFC00DFB982 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7BB072B71C7EEAFC00DFB982 /* Main.storyboard */; };
 		7BB072BB1C7EEAFC00DFB982 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BB072BA1C7EEAFC00DFB982 /* Assets.xcassets */; };
 		7BB072BE1C7EEAFC00DFB982 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7BB072BC1C7EEAFC00DFB982 /* LaunchScreen.storyboard */; };
 		7BB072C91C7EEAFD00DFB982 /* ___Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BB072C81C7EEAFD00DFB982 /* ___Tests.m */; };
 		7BB072D41C7EEAFD00DFB982 /* ___UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BB072D31C7EEAFD00DFB982 /* ___UITests.m */; };
-		7BB072E31C7EEB0600DFB982 /* PullDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BB072E21C7EEB0600DFB982 /* PullDownView.m */; };
+		7BE88BE71CB25CCE00E2EB71 /* PullDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BE88BE41CB25CCE00E2EB71 /* PullDownView.m */; };
+		7BE88BE81CB25CCE00E2EB71 /* PullTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BE88BE61CB25CCE00E2EB71 /* PullTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,8 +40,6 @@
 		7BB072AF1C7EEAFC00DFB982 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7BB072B11C7EEAFC00DFB982 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7BB072B21C7EEAFC00DFB982 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		7BB072B41C7EEAFC00DFB982 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		7BB072B51C7EEAFC00DFB982 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		7BB072B81C7EEAFC00DFB982 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7BB072BA1C7EEAFC00DFB982 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7BB072BD1C7EEAFC00DFB982 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -52,8 +50,10 @@
 		7BB072CF1C7EEAFD00DFB982 /* 下拉框UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "下拉框UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BB072D31C7EEAFD00DFB982 /* ___UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "___UITests.m"; sourceTree = "<group>"; };
 		7BB072D51C7EEAFD00DFB982 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7BB072E11C7EEB0600DFB982 /* PullDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullDownView.h; sourceTree = "<group>"; };
-		7BB072E21C7EEB0600DFB982 /* PullDownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullDownView.m; sourceTree = "<group>"; };
+		7BE88BE31CB25CCE00E2EB71 /* PullDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullDownView.h; sourceTree = "<group>"; };
+		7BE88BE41CB25CCE00E2EB71 /* PullDownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullDownView.m; sourceTree = "<group>"; };
+		7BE88BE51CB25CCE00E2EB71 /* PullTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullTableViewController.h; sourceTree = "<group>"; };
+		7BE88BE61CB25CCE00E2EB71 /* PullTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,10 +106,7 @@
 			children = (
 				7BB072B11C7EEAFC00DFB982 /* AppDelegate.h */,
 				7BB072B21C7EEAFC00DFB982 /* AppDelegate.m */,
-				7BB072B41C7EEAFC00DFB982 /* ViewController.h */,
-				7BB072B51C7EEAFC00DFB982 /* ViewController.m */,
-				7BB072E11C7EEB0600DFB982 /* PullDownView.h */,
-				7BB072E21C7EEB0600DFB982 /* PullDownView.m */,
+				7BE88BE21CB25C9000E2EB71 /* PullDownView */,
 				7BB072B71C7EEAFC00DFB982 /* Main.storyboard */,
 				7BB072BA1C7EEAFC00DFB982 /* Assets.xcassets */,
 				7BB072BC1C7EEAFC00DFB982 /* LaunchScreen.storyboard */,
@@ -143,6 +140,17 @@
 				7BB072D51C7EEAFD00DFB982 /* Info.plist */,
 			);
 			path = "下拉框UITests";
+			sourceTree = "<group>";
+		};
+		7BE88BE21CB25C9000E2EB71 /* PullDownView */ = {
+			isa = PBXGroup;
+			children = (
+				7BE88BE31CB25CCE00E2EB71 /* PullDownView.h */,
+				7BE88BE41CB25CCE00E2EB71 /* PullDownView.m */,
+				7BE88BE51CB25CCE00E2EB71 /* PullTableViewController.h */,
+				7BE88BE61CB25CCE00E2EB71 /* PullTableViewController.m */,
+			);
+			path = PullDownView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -275,10 +283,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7BB072B61C7EEAFC00DFB982 /* ViewController.m in Sources */,
+				7BE88BE81CB25CCE00E2EB71 /* PullTableViewController.m in Sources */,
 				7BB072B31C7EEAFC00DFB982 /* AppDelegate.m in Sources */,
+				7BE88BE71CB25CCE00E2EB71 /* PullDownView.m in Sources */,
 				7BB072B01C7EEAFC00DFB982 /* main.m in Sources */,
-				7BB072E31C7EEB0600DFB982 /* PullDownView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,6 +512,7 @@
 				7BB072DA1C7EEAFD00DFB982 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7BB072DB1C7EEAFD00DFB982 /* Build configuration list for PBXNativeTarget "下拉框Tests" */ = {
 			isa = XCConfigurationList;
@@ -512,6 +521,7 @@
 				7BB072DD1C7EEAFD00DFB982 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7BB072DE1C7EEAFD00DFB982 /* Build configuration list for PBXNativeTarget "下拉框UITests" */ = {
 			isa = XCConfigurationList;
@@ -520,6 +530,7 @@
 				7BB072E01C7EEAFD00DFB982 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
