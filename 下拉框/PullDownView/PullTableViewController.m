@@ -24,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     WEAKSELF
-    
+    //范例1
     self.pullDownView.listArray = @[@"1",@"2",@"3"].mutableCopy;
     self.pullDownView.titleString = @"数字";
     self.pullDownView.selectBlock = ^(NSInteger index){
@@ -33,7 +33,7 @@
     self.pullDownView.buttonClick = ^(){
         weakSelf.tempPullDown = weakSelf.pullDownView;
     };
-    
+    //范例2
     [self.pullDownView1 pullDownWithListArray:@[@"中国",@"法国",@"英国",@"日本",@"韩国",@"伊拉克"] AndTitle:@"中国" buttonClick:^{
         weakSelf.tempPullDown = weakSelf.pullDownView1;
         NSLog(@"点击按钮");
@@ -43,8 +43,7 @@
     }];
     self.pullDownView1.originX = 0;
     self.pullDownView1.originY = 130.0;
-    
-    
+    //范例3
     self.pullDownView2.listArray = @[@"名字",@"年龄",@"性别"].mutableCopy;
     self.pullDownView2.titleString = @"类型";
     self.pullDownView2.buttonClick = ^(){
