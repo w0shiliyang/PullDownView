@@ -35,16 +35,6 @@
 @property (nonatomic, copy) void(^selectBlock)(NSInteger item);
 
 
-/*
- * 父视图相对的偏移量：X轴（纠正位置用）
- */
-@property (nonatomic, assign) CGFloat originX;
-/*
- * 父视图相对的偏移量：Y轴（纠正位置用）
- */
-@property (nonatomic, assign) CGFloat originY;
-
-
 //关闭表0.3秒
 -(void)closeTableView;
 //立刻关闭

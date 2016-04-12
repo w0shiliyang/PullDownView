@@ -33,6 +33,7 @@
     self.pullDownView.buttonClick = ^(){
         weakSelf.tempPullDown = weakSelf.pullDownView;
     };
+    
     //范例2
     [self.pullDownView1 pullDownWithListArray:@[@"中国",@"法国",@"英国",@"日本",@"韩国",@"伊拉克"] AndTitle:@"中国" buttonClick:^{
         weakSelf.tempPullDown = weakSelf.pullDownView1;
@@ -41,8 +42,7 @@
         NSLog(@"点击了第%ld个",index);
         weakSelf.tempPullDown = nil;
     }];
-    self.pullDownView1.originX = 0;
-    self.pullDownView1.originY = 130.0;
+
     //范例3
     self.pullDownView2.listArray = @[@"名字",@"年龄",@"性别"].mutableCopy;
     self.pullDownView2.titleString = @"类型";
@@ -52,8 +52,6 @@
     self.pullDownView2.selectBlock = ^(NSInteger index){
         NSLog(@"pullDownView2点击了第%ld个",index);
     };
-    self.pullDownView2.originX = 0;
-    self.pullDownView2.originY = 260.0;
     
 }
 

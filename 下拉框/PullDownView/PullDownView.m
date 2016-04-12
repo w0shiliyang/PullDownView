@@ -84,7 +84,7 @@
     _listTable.delegate = self;
     _listTable.dataSource = self;
     _listTable.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    self.listTable.frame = CGRectMake(self.frame.origin.x+self.originX,self.frame.origin.y + self.frame.size.height + self.originY, self.frame.size.width, 0);
+    self.listTable.frame = CGRectMake(self.frame.origin.x,self.frame.origin.y + self.frame.size.height, self.frame.size.width, 0);
     [KeyWindow addSubview:_listTable];
 }
 
@@ -98,10 +98,11 @@
     [super layoutSubviews];
     self.title.frame = CGRectMake(0, 1, self.frame.size.width, self.frame.size.height-1);
     self.downPullBtn.frame = CGRectMake(self.frame.size.width-kDownPullBtnwidth-2, (self.frame.size.height-kDownPullBtnheight)/2, kDownPullBtnwidth, kDownPullBtnheight);
-    self.viewBtn.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    CGRect rect = self.listTable.frame;
-    rect.origin.x = self.frame.origin.x+self.originX;
-    rect.origin.y = self.frame.origin.y + self.frame.size.height + self.originY;
+    self.viewBtn.frame = self.frame;
+    CGRect rect = [self convertRect:self.frame toView:KeyWindow];
+    rect.origin.x -= self.frame.origin.x;
+    rect.origin.y -= self.frame.origin.y - self.frame.size.height;
+    rect.size.height = self.listTable.frame.size.height;
     self.listTable.frame = rect;
 }
 
@@ -182,16 +183,6 @@
     _selectBlock = selectBlock;
 }
 
--(void)setOriginX:(CGFloat)originX
-{
-    _originX = originX;
-    
-}
--(void)setOriginY:(CGFloat)originY
-{
-    _originY = originY;
-    
-}
 
 #pragma mark -TableviewDelegate
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

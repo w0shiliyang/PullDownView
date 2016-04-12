@@ -52,8 +52,8 @@
 		7BB072D51C7EEAFD00DFB982 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7BE88BE31CB25CCE00E2EB71 /* PullDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullDownView.h; sourceTree = "<group>"; };
 		7BE88BE41CB25CCE00E2EB71 /* PullDownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullDownView.m; sourceTree = "<group>"; };
-		7BE88BE51CB25CCE00E2EB71 /* PullTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullTableViewController.h; sourceTree = "<group>"; };
-		7BE88BE61CB25CCE00E2EB71 /* PullTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullTableViewController.m; sourceTree = "<group>"; };
+		7BE88BE51CB25CCE00E2EB71 /* PullTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PullTableViewController.h; path = PullDownView/PullTableViewController.h; sourceTree = "<group>"; };
+		7BE88BE61CB25CCE00E2EB71 /* PullTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PullTableViewController.m; path = PullDownView/PullTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +106,8 @@
 			children = (
 				7BB072B11C7EEAFC00DFB982 /* AppDelegate.h */,
 				7BB072B21C7EEAFC00DFB982 /* AppDelegate.m */,
+				7BE88BE51CB25CCE00E2EB71 /* PullTableViewController.h */,
+				7BE88BE61CB25CCE00E2EB71 /* PullTableViewController.m */,
 				7BE88BE21CB25C9000E2EB71 /* PullDownView */,
 				7BB072B71C7EEAFC00DFB982 /* Main.storyboard */,
 				7BB072BA1C7EEAFC00DFB982 /* Assets.xcassets */,
@@ -147,8 +149,6 @@
 			children = (
 				7BE88BE31CB25CCE00E2EB71 /* PullDownView.h */,
 				7BE88BE41CB25CCE00E2EB71 /* PullDownView.m */,
-				7BE88BE51CB25CCE00E2EB71 /* PullTableViewController.h */,
-				7BE88BE61CB25CCE00E2EB71 /* PullTableViewController.m */,
 			);
 			path = PullDownView;
 			sourceTree = "<group>";
