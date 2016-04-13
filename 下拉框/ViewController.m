@@ -14,8 +14,8 @@
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet PullDownView *pullDownView;
 @property (weak, nonatomic) IBOutlet PullDownView *pullDownView1;
-@property (nonatomic, strong) PullDownView *pu;
-
+@property (nonatomic, strong) PullDownView *pullDownView2;
+//临时存放 用来关闭
 @property (nonatomic, strong) PullDownView *tempPullDown;
 @end
 
@@ -24,8 +24,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     WEAKSELF
-    
-    //xib创建
+    //---------------------------
+    //xib简单创建
     self.pullDownView.listArray = @[@"1",@"2",@"3"].mutableCopy;
     self.pullDownView.titleString = @"数字";
     //打开
@@ -37,7 +37,10 @@
     self.pullDownView.selectBlock = ^(NSInteger index){
         NSLog(@"pullDownView1点击了第%ld个",index);
     };
+    //---------------------------
     
+    
+    //---------------------------
     //xib快速创建
     [self.pullDownView1 pullDownWithListArray:@[@"中国",@"法国",@"英国",@"日本",@"韩国",@"伊拉克"] AndTitle:@"中国" OpenClick:^{
         NSLog(@"打开");
@@ -45,16 +48,19 @@
     } selectItem:^(NSInteger index) {
         NSLog(@"点击了第%ld个",index);
     }];
-
+    //---------------------------
+    
+    
+    //---------------------------
     //代码创建
     //block里用到控件需要设置为属性
-    self.pu = [PullDownView pullDownWithFrame:CGRectMake(200, 300, 100, 40) ListArray:@[@"小明",@"xiaoh",@"aaaa"] AndTitle:@"哈哈" OpenClick:^{
-        weakSelf.tempPullDown = weakSelf.pu;
+    self.pullDownView2 = [PullDownView pullDownWithFrame:CGRectMake(200, 300, 100, 40) ListArray:@[@"小明",@"xiaoh",@"aaaa"] AndTitle:@"哈哈" OpenClick:^{
+        weakSelf.tempPullDown = weakSelf.pullDownView2;
     } selectItem:^(NSInteger index) {
         NSLog(@"点击了第%ld个",index);
     }];
-    [self.view addSubview:self.pu];
-    
+    [self.view addSubview:self.pullDownView2];
+    //---------------------------
     
 }
 
