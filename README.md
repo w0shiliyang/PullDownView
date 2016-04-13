@@ -31,7 +31,3 @@ self.pullDownView2 = [PullDownView pullDownWithFrame:CGRectMake(200, 300, 100, 4
 # 期待
 - 如果在使用过程中遇到BUG，或发现功能不够用，希望你能Issues我,或者微博联系我：[@李洋](https://weibo.com/u/3297900977)
 - 如果觉得好用请Star!
-
-
-
-
