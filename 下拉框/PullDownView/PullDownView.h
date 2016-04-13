@@ -26,11 +26,11 @@
  */
 @property (nonatomic, copy) NSString *titleString;
 /*
- * 选中列表
+ * 打开列表
  */
-@property (nonatomic, copy) void(^buttonClick)(void);
+@property (nonatomic, copy) void(^openClick)(void);
 /*
- * 选中列表后回调
+ * 选中列表选项
  */
 @property (nonatomic, copy) void(^selectBlock)(NSInteger item);
 
@@ -40,9 +40,9 @@
 //立刻关闭
 -(void)closeTableFast;
 //快速创建
-+(instancetype)pullDownWithFrame:(CGRect)frame ListArray:(NSArray *)listArray AndTitle:(NSString *)title buttonClick:(void(^)(void))buttonClick selectItem:(void(^)(NSInteger index))selectBlock;
++(instancetype)pullDownWithFrame:(CGRect)frame ListArray:(NSArray *)listArray AndTitle:(NSString *)title OpenClick:(void(^)(void))openBlock selectItem:(void(^)(NSInteger index))selectBlock;
 
 //用xib创建后添加数据和方法
--(void)pullDownWithListArray:(NSArray *)listArray AndTitle:(NSString *)title buttonClick:(void(^)(void))buttonClick selectItem:(void(^)(NSInteger index))selectBlock;
+-(void)pullDownWithListArray:(NSArray *)listArray AndTitle:(NSString *)title OpenClick:(void(^)(void))openBlock selectItem:(void(^)(NSInteger index))selectBlock;
 
 @end

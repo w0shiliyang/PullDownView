@@ -27,7 +27,9 @@
 
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame: frame];
-    [self pullDownWithListArray:nil AndTitle:nil buttonClick:nil selectItem:self.selectBlock];
+    if (self) {
+        [self pullDownWithListArray:nil AndTitle:nil OpenClick:nil selectItem:self.selectBlock];
+    }
     return self;
 }
 
@@ -35,23 +37,24 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self pullDownWithListArray:nil AndTitle:nil buttonClick:nil selectItem:self.selectBlock];
+        [self pullDownWithListArray:nil AndTitle:nil OpenClick:nil selectItem:self.selectBlock];
     }
     return self;
 }
 
-+(instancetype)pullDownWithFrame:(CGRect)frame ListArray:(NSArray *)listArray AndTitle:(NSString *)title buttonClick:(void(^)(void))buttonClick selectItem:(void(^)(NSInteger index))selectBlock{
-    PullDownView * pullDownView =[[[self class]alloc]initWithFrame:frame];
++(instancetype)pullDownWithFrame:(CGRect)frame ListArray:(NSArray *)listArray AndTitle:(NSString *)title OpenClick:(void(^)(void))openBlock selectItem:(void(^)(NSInteger index))selectBlock{
+    PullDownView * pullDownView =[[[self class]alloc]init];
+    pullDownView.frame = frame;
     pullDownView.listArray = listArray;
     pullDownView.title.text = title;
     pullDownView.selectBlock = selectBlock;
-    pullDownView.buttonClick = buttonClick;
+    pullDownView.openClick = openBlock;
    return pullDownView;
 }
 
--(void)pullDownWithListArray:(NSArray *)listArray AndTitle:(NSString *)title buttonClick:(void(^)(void))buttonClick selectItem:(void(^)(NSInteger index))selectBlock{
+-(void)pullDownWithListArray:(NSArray *)listArray AndTitle:(NSString *)title OpenClick:(void(^)(void))openBlock selectItem:(void(^)(NSInteger index))selectBlock{
     self.selectBlock = selectBlock;
-    self.buttonClick = buttonClick;
+    self.openClick = openBlock;
     self.listArray = listArray.mutableCopy;
     self.backgroundColor = [UIColor groupTableViewBackgroundColor];
     _isOpen = NO;
@@ -72,12 +75,13 @@
     self.viewBtn.backgroundColor = [UIColor clearColor];
     [self addSubview:self.viewBtn];
     
-    UIView * view = [UIView new];
-    view.frame = KeyWindow.frame;
-    view.backgroundColor = [UIColor grayColor];
-    view.alpha = 0.2;
-    view.userInteractionEnabled = NO;
-    [KeyWindow addSubview:view];
+    //window上的遮罩
+//    UIView * view = [UIView new];
+//    view.frame = KeyWindow.frame;
+//    view.backgroundColor = [UIColor grayColor];
+//    view.alpha = 0.2;
+//    view.userInteractionEnabled = NO;
+//    [KeyWindow addSubview:view];
     
     self.listTable = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
     _listTable.bounces = NO;
@@ -98,12 +102,12 @@
     [super layoutSubviews];
     self.title.frame = CGRectMake(0, 1, self.frame.size.width, self.frame.size.height-1);
     self.downPullBtn.frame = CGRectMake(self.frame.size.width-kDownPullBtnwidth-2, (self.frame.size.height-kDownPullBtnheight)/2, kDownPullBtnwidth, kDownPullBtnheight);
-    self.viewBtn.frame = self.frame;
-    CGRect rect = [self convertRect:self.frame toView:KeyWindow];
-    rect.origin.x -= self.frame.origin.x;
-    rect.origin.y -= self.frame.origin.y - self.frame.size.height;
+    self.viewBtn.frame = self.title.frame;
+    CGRect rect = [self convertRect:self.bounds toView:KeyWindow];
+    rect.origin.y +=  self.frame.size.height;
     rect.size.height = self.listTable.frame.size.height;
     self.listTable.frame = rect;
+
 }
 
 -(void)tapAction{
@@ -140,8 +144,8 @@
 
 //点击
 -(void)didClickDownPullBtn:(UIButton*)btn{
-    if (self.buttonClick) {
-        _buttonClick();
+    if (self.openClick) {
+        _openClick();
     }
     [self tapAction];
 }

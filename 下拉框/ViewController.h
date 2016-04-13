@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PullTableViewController : UITableViewController
+@interface ViewController : UITableViewController
 
 @end
