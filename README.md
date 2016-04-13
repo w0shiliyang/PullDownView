@@ -1,5 +1,5 @@
 # PullDownView
-简单宜用的下拉列表
+简单易用的下拉列表
 ## 使用 （支持IB和代码）
 ##### IB用法
 直接拖UIView到IB上，设置为PullDownView，代码部分只需要实现
